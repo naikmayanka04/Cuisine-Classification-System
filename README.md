@@ -173,7 +173,7 @@ decision, not a hidden limitation.
 
 ## Data Source
 
-`data/Restaurant_Dataset.csv` (converted from the provided `.xlsx`) — a Zomato-style
+`data/Restaurant_Dataset.csv` — a Zomato-style
 restaurant listing dataset covering 9,551 restaurants across 15 countries, with columns for
 location, cuisines served, pricing, service options (table booking, online delivery), and
 aggregate customer ratings.
