@@ -1,3 +1,4 @@
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/naikmayanka04/Cuisine-Classification-System)
 # Restaurant Cuisine Classification
 
 Predicting a restaurant's primary cuisine from structured attributes (location, price,
