@@ -1,20 +1,3 @@
-"""
-train.py
---------
-End-to-end training and evaluation pipeline for restaurant cuisine
-classification.
-
-Usage:
-    python src/train.py --data data/Restaurant_Dataset.csv --model random_forest
-
-Outputs (written to outputs/):
-    - classification_report.txt   : precision/recall/F1 per cuisine class
-    - confusion_matrix.png        : confusion matrix heatmap
-    - feature_importance.png      : top features driving predictions (RF only)
-    - per_class_performance.csv   : per-class metrics + support, for analysis
-    - model.joblib                : trained, ready-to-load model pipeline
-"""
-
 import argparse
 import os
 
@@ -26,7 +9,7 @@ import joblib
 # folder you run the command from.
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_ROOT = os.path.dirname(SCRIPT_DIR) if os.path.basename(SCRIPT_DIR) == "src" else SCRIPT_DIR
-DEFAULT_DATA_PATH = os.path.join(REPO_ROOT, "data", "Restaurant_Dataset.csv")
+DEFAULT_DATA_PATH = os.path.join(REPO_ROOT, "Restaurant_Dataset.csv")
 DEFAULT_OUT_DIR = os.path.join(REPO_ROOT, "outputs")
 import matplotlib
 matplotlib.use("Agg")
@@ -117,7 +100,7 @@ def main():
         raise FileNotFoundError(
             f"Could not find the dataset at '{args.data}'.\n"
             f"Checked relative to the repo root ({REPO_ROOT}).\n"
-            f"Make sure data/Restaurant_Dataset.csv exists there, or pass "
+            f"Make sure Restaurant_Dataset.csv exists there, or pass "
             f"--data /full/path/to/your/file.csv"
         )
 
