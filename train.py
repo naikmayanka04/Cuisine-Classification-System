@@ -1,7 +1,33 @@
+"""
+train.py
+--------
+End-to-end training and evaluation pipeline for restaurant cuisine
+classification.
+
+Usage:
+    python src/train.py --data data/Restaurant_Dataset.csv --model random_forest
+
+Outputs (written to outputs/):
+    - classification_report.txt   : precision/recall/F1 per cuisine class
+    - confusion_matrix.png        : confusion matrix heatmap
+    - feature_importance.png      : top features driving predictions (RF only)
+    - per_class_performance.csv   : per-class metrics + support, for analysis
+    - model.joblib                : trained, ready-to-load model pipeline
+"""
+
 import argparse
 import os
 
 import joblib
+
+# Resolve paths relative to the repository root (the parent of this file's
+# directory), not the caller's current working directory. This means
+# `python train.py` and `python src/train.py` both work no matter which
+# folder you run the command from.
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT = os.path.dirname(SCRIPT_DIR) if os.path.basename(SCRIPT_DIR) == "src" else SCRIPT_DIR
+DEFAULT_DATA_PATH = os.path.join(REPO_ROOT, "data", "Restaurant_Dataset.csv")
+DEFAULT_OUT_DIR = os.path.join(REPO_ROOT, "outputs")
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -77,15 +103,23 @@ def plot_feature_importance(model, feature_names, out_path, top_n=15):
 
 def main():
     parser = argparse.ArgumentParser(description="Train a restaurant cuisine classifier.")
-    parser.add_argument("--data", default="data/Restaurant_Dataset.csv")
+    parser.add_argument("--data", default=DEFAULT_DATA_PATH)
     parser.add_argument("--model", default="random_forest",
                          choices=["random_forest", "logistic_regression"])
     parser.add_argument("--top-n-cuisines", type=int, default=12)
     parser.add_argument("--test-size", type=float, default=0.2)
-    parser.add_argument("--out-dir", default="outputs")
+    parser.add_argument("--out-dir", default=DEFAULT_OUT_DIR)
     args = parser.parse_args()
 
     os.makedirs(args.out_dir, exist_ok=True)
+
+    if not os.path.exists(args.data):
+        raise FileNotFoundError(
+            f"Could not find the dataset at '{args.data}'.\n"
+            f"Checked relative to the repo root ({REPO_ROOT}).\n"
+            f"Make sure data/Restaurant_Dataset.csv exists there, or pass "
+            f"--data /full/path/to/your/file.csv"
+        )
 
     print(f"Loading data from {args.data} ...")
     raw = load_data(args.data)
